@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <title>Gallery Grotto Vista Resort</title>
+ <meta name="description" content="Browse photos of Grotto Vista Resort's pools, rooms, events, and facilities.">
+ <script>
+ document.documentElement.classList.remove('no-js');
+ document.documentElement.classList.add('js');
+ </script>
+ <link rel="preconnect" href="https://fonts.googleapis.com">
+ <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+ <link href="https://fonts.googleapis.com/css2?family=Cardo:ital@1&display=swap" rel="stylesheet">
+ <link rel="stylesheet" href="css/style.css">
+ <style>
+ .reveal { opacity: 0; transform: translateY(28px); transition: opacity .7s ease, transform .7s ease; }
+ .reveal.is-visible { opacity: 1; transform: translateY(0); }
+
+ /* Gallery card grid */
+
+ /* Section heading spanning full row */
+ .gallery-section-title {
+ grid-column: 1 / -1;
+ font-family: var(--font-2);
+ font-size: var(--text-xl);
+ font-weight: 700;
+ color: var(--color-text-dark);
+ margin: var(--vspace-1) 0 .4rem;
+ padding-bottom: var(--vspace-0_75);
+ border-bottom: 2px solid var(--color-1);
+ display: flex;
+ align-items: center;
+ gap: 1rem;
+ }
+ .gallery-section-title:first-child { margin-top: 0; }
+
+ /* Hover card (adapted from shared design) */
+ :root { --d: 700ms; --e: cubic-bezier(0.19, 1, 0.22, 1); }
+
+ .gallery-item {
+ position: relative;
+ display: flex;
+ align-items: flex-end;
+ overflow: hidden;
+ border-radius: 12px;
+ cursor: pointer;
+ color: white;
+ box-shadow: 0 1px 1px rgba(0,0,0,.1),
+ 0 2px 2px rgba(0,0,0,.1),
+ 0 4px 4px rgba(0,0,0,.1),
+ 0 8px 8px rgba(0,0,0,.1),
+ 0 16px 16px rgba(0,0,0,.1);
+ }
+
+ /* background layer works for both emoji divs and <img> tags */
+ .gallery-item__bg {
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 100%;
+ background-color: #1a2a3a;
+ background-size: cover;
+ background-position: center;
+ display: block;
+ object-fit: cover;
+ object-position: center;
+ transition: transform calc(700ms * 1.5) cubic-bezier(0.19, 1, 0.22, 1);
+ }
+
+ /* dark gradient overlay */
+ .gallery-item::after {
+ content: '';
+ position: absolute;
+ inset: 0;
+ width: 100%;
+ height: 200%;
+ pointer-events: none;
+ background-image: linear-gradient(
+ to bottom,
+ hsla(0,0%,0%,0) 0%,
+ hsla(0,0%,0%,.034) 22%,
+ hsla(0,0%,0%,.182) 47%,
+ hsla(0,0%,0%,.394) 64%,
+ hsla(0,0%,0%,.607) 79%,
+ hsla(0,0%,0%,.79) 100%
+ );
+ transform: translateY(-50%);
+ transition: transform calc(700ms * 2) cubic-bezier(0.19, 1, 0.22, 1);
+ }
+
+ /* content block */
+ .gallery-item__content {
+ position: relative;
+ z-index: 1;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+ width: 100%;
+ padding: 1rem;
+ text-align: center;
+ transition: transform 700ms cubic-bezier(0.19, 1, 0.22, 1);
+ }
+
+ .gallery-item__content > * + * { margin-top: .4rem; }
+
+ .gallery-item__title {
+ font-family: var(--font-2);
+ font-size: var(--text-md);
+ font-weight: 700;
+ color: white;
+ margin: 0;
+ line-height: 1.2;
+ }
+
+ .gallery-item__copy {
+ font-family: 'Cardo', serif;
+ font-size: 1rem;
+ font-style: italic;
+ line-height: 1.4;
+ color: rgba(255,255,255,.9);
+ margin: 0;
+ }
+
+ .gallery-item__tag {
+ display: inline-block;
+ font-family: var(--font-2);
+ font-size: .85rem;
+ font-weight: 700;
+ letter-spacing: .06em;
+ text-transform: uppercase;
+ color: white;
+ background: rgba(0,0,0,.35);
+ border: 1px solid rgba(255,255,255,.25);
+ padding: .3rem .8rem;
+ border-radius: 50px;
+ }
+
+ /* Hover interactions (pointer devices only) */
+ @media (hover: hover) {
+ .gallery-item::after {
+ transform: translateY(0);
+ }
+
+ .gallery-item__content {
+ transform: translateY(calc(100% 5rem));
+ }
+
+ .gallery-item__content > *:not(.gallery-item__title) {
+ opacity: 0;
+ transform: translateY(1rem);
+ transition:
+ transform 700ms cubic-bezier(0.19, 1, 0.22, 1),
+ opacity 700ms cubic-bezier(0.19, 1, 0.22, 1);
+ }
+
+ .gallery-item:hover .gallery-item__bg,
+ .gallery-item:focus-within .gallery-item__bg {
+ transform: translateY(-4%);
+ }
+
+ .gallery-item:hover::after,
+ .gallery-item:focus-within::after {
+ transform: translateY(-50%);
+ }
+
+ .gallery-item:hover .gallery-item__content,
+ .gallery-item:focus-within .gallery-item__content {
+ transform: translateY(0);
+ }
+
+ .gallery-item:hover .gallery-item__content > *:not(.gallery-item__title),
+ .gallery-item:focus-within .gallery-item__content > *:not(.gallery-item__title) {
+ opacity: 1;
+ transform: translateY(0);
+ transition-delay: calc(700ms / 8);
+ }
+
+ .gallery-item:focus-within .gallery-item__bg,
+ .gallery-item:focus-within::after,
+ .gallery-item:focus-within .gallery-item__content,
+ .gallery-item:focus-within .gallery-item__content > *:not(.gallery-item__title) {
+ transition-duration: 0s;
+ }
+ }
+ </style>
+</head>
+
+<body id="top">
+ <div id="preloader"><div id="loader"></div></div>
+
+ <div id="page" class="s-pagewrap">
+
+ <!-- HEADER -->
+ <header class="s-header scrolled">
+ <div class="row s-header__inner">
+ <div class="s-header__block">
+ <div class="s-header__logo">
+ <a class="logo" href="index.html">Grotto <span>Vista</span></a>
+ </div>
+ <button class="s-header__menu-toggle" aria-label="Toggle menu"><span></span></button>
+ </div>
+ <nav class="s-header__nav" role="navigation">
+ <ul class="s-header__menu-links">
+ <li><a href="index.html">Home</a></li>
+ <li><a href="rates.html">Rates</a></li>
+ <li><a href="reservations.html">Reservations</a></li>
+ <li><a href="facilities.html">Facilities</a></li>
+ <li class="current"><a href="gallery.html">Gallery</a></li>
+ <li><a href="contact.html">Contact</a></li>
+ <li><a href="directions.html">Directions</a></li>
+ </ul>
+ </nav>
+ </div>
+ </header>
+
+ <!-- PAGE HERO -->
+ <section class="page-hero">
+ <div class="row">
+ <div class="column lg-12">
+ <ul class="breadcrumb">
+ <li><a href="index.html">Home</a></li>
+ <li class="current">Gallery</li>
+ </ul>
+ <div class="page-hero__eyebrow">See It All</div>
+ <h1 class="page-hero__title">Photo Gallery</h1>
+ <p class="page-hero__desc">Browse photos of our pools, accommodations, events, and resort grounds. Hover over any card to learn more.</p>
+ </div>
+ </div>
+ </section>
+
+ <main>
+ <section class="s-section">
+ <div class="row">
+ <div class="column lg-12">
+
+ <!-- Filter Buttons -->
+ <div class="gallery-filter reveal" style="margin-bottom: var(--vspace-2);">
+ <button class="gallery-filter__btn active" data-filter="all">All Photos</button>
+ <button class="gallery-filter__btn" data-filter="pools">Pools</button>
+ <button class="gallery-filter__btn" data-filter="rooms">Rooms</button>
+ <button class="gallery-filter__btn" data-filter="events">Events</button>
+ <button class="gallery-filter__btn" data-filter="cottages">Cottages</button>
+ <button class="gallery-filter__btn" data-filter="facilities">Facilities</button>
+ </div>
+
+ <!-- Gallery Grid -->
+ <div class="gallery-grid reveal">
+
+ <!-- POOLS -->
+ <div class="gallery-section-title"> Pools</div>
+
+ <div class="gallery-item" data-category="pools" data-emoji="" data-caption="The iconic Galleon Ship Pool 1,600 sqm of aquatic fun">
+ <img class="gallery-item__bg" src="images/gallery-pool-galleon.jpg" alt="Galleon Ship Pool">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Galleon Ship Pool</h2>
+ <p class="gallery-item__copy">The iconic 1,600 sqm pool the crown jewel of Grotto Vista Resort.</p>
+ <span class="gallery-item__tag">Pools</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="pools" data-emoji="" data-caption="The main pool area with the famous Galleon Ship centerpiece">
+ <img class="gallery-item__bg" src="images/gallery-pool-main.jpg" alt="Main Pool Area">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Main Pool Area</h2>
+ <p class="gallery-item__copy">Wide pool decks and splash zones for all ages.</p>
+ <span class="gallery-item__tag">Pools</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="pools" data-emoji="" data-caption="Public swimming pool perfect for families">
+ <img class="gallery-item__bg" src="images/gallery-pool-secondary.jpg" alt="Secondary Public Pool">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Secondary Public Pool</h2>
+ <p class="gallery-item__copy">A quieter pool perfect for lap swimming and relaxed family time.</p>
+ <span class="gallery-item__tag">Pools</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="pools" data-emoji="" data-caption="One of our 6 exclusive private pools">
+ <img class="gallery-item__bg" src="images/gallery-pool-private.jpg" alt="Private Pool Villa">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Private Pool Villa</h2>
+ <p class="gallery-item__copy">Six exclusive private pools available for rent total privacy for your group.</p>
+ <span class="gallery-item__tag">Pools</span>
+ </div>
+ </div>
+
+
+
+ <div class="gallery-item" data-category="pools" data-emoji="" data-caption="Night swim at the resort lights and reflections on the water">
+ <img class="gallery-item__bg" src="images/gallery-pool-night.jpg" alt="Night Swimming">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Night Swimming</h2>
+ <p class="gallery-item__copy">Experience the resort after dark Friday and Saturday nights only.</p>
+ <span class="gallery-item__tag">Pools</span>
+ </div>
+ </div>
+
+ <!-- ROOMS -->
+ <div class="gallery-section-title"> Rooms</div>
+
+ <div class="gallery-item" data-category="rooms" data-emoji="" data-caption="Air-conditioned standard room with modern amenities">
+ <img class="gallery-item__bg" src="images/gallery-room-standard.jpg" alt="Standard AC Room">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Standard AC Room</h2>
+ <p class="gallery-item__copy">Comfortable air-conditioned rooms for overnight stays.</p>
+ <span class="gallery-item__tag">Rooms</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="rooms" data-emoji="" data-caption="Comfortable deluxe room for families and small groups">
+ <img class="gallery-item__bg" src="images/gallery-room-deluxe.jpg" alt="Deluxe Family Room">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Deluxe Family Room</h2>
+ <p class="gallery-item__copy">Spacious rooms ideal for families and small groups.</p>
+ <span class="gallery-item__tag">Rooms</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="rooms" data-emoji="" data-caption="Cozy room for overnight guests at the resort">
+ <img class="gallery-item__bg" src="images/gallery-room-overnight.jpg" alt="Overnight Accommodation">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Overnight Accommodation</h2>
+ <p class="gallery-item__copy">Stay the night and wake up ready for another day of fun.</p>
+ <span class="gallery-item__tag">Rooms</span>
+ </div>
+ </div>
+
+ <!-- EVENTS -->
+ <div class="gallery-section-title"> Events</div>
+
+ <div class="gallery-item" data-category="events" data-emoji="" data-caption="Birthday party celebration at Grotto Vista Resort's event hall">
+ <img class="gallery-item__bg" src="images/gallery-event-birthday.jpg" alt="Birthday Celebration">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Birthday Celebration</h2>
+ <p class="gallery-item__copy">Celebrate your special day at our event halls with full catering support.</p>
+ <span class="gallery-item__tag">Events</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="events" data-emoji="" data-caption="Corporate team building at our spacious event facilities">
+ <img class="gallery-item__bg" src="images/gallery-event-corporate.jpg" alt="Corporate Team Building">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Corporate Team Building</h2>
+ <p class="gallery-item__copy">Spacious venues for corporate events, outings, and team activities.</p>
+ <span class="gallery-item__tag">Events</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="events" data-emoji="‍‍‍" data-caption="Family reunion at the Pinoy Hut Gazebo perfect for big groups">
+ <img class="gallery-item__bg" src="images/gallery-event-reunion.jpg" alt="Family Reunion">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Family Reunion</h2>
+ <p class="gallery-item__copy">The perfect backdrop for reunions spacious grounds and group-friendly facilities.</p>
+ <span class="gallery-item__tag">Events</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="events" data-emoji="" data-caption="Wedding reception at Grotto Vista's premium event venue">
+ <img class="gallery-item__bg" src="images/gallery-event-wedding.jpg" alt="Wedding Reception">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Wedding Reception</h2>
+ <p class="gallery-item__copy">Celebrate your love at our premium Vigan House and Roof Deck venue.</p>
+ <span class="gallery-item__tag">Events</span>
+ </div>
+ </div>
+
+ <!-- COTTAGES -->
+ <div class="gallery-section-title"> Cottages</div>
+
+ <div class="gallery-item" data-category="cottages" data-emoji="" data-caption="Umbrella shed great for small groups seeking shade by the pool">
+ <img class="gallery-item__bg" src="images/gallery-cottage-umbrella.jpg" alt="Umbrella Shed">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Umbrella Shed</h2>
+ <p class="gallery-item__copy">Shaded open-air seating for up to 4 guests. Simple and affordable.</p>
+ <span class="gallery-item__tag">Cottages</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="cottages" data-emoji="" data-caption="Traditional nipa hut cottage for 5–6 guests">
+ <img class="gallery-item__bg" src="images/gallery-cottage-nipa.jpg" alt="Nipa Hut Cottage">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Nipa Hut Cottage</h2>
+ <p class="gallery-item__copy">Traditional Filipino-style cottage for 5–6 guests. ₱600–₱700.</p>
+ <span class="gallery-item__tag">Cottages</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="cottages" data-emoji="" data-caption="Premium Vigan House / Roof Deck for large groups up to 25 pax">
+ <img class="gallery-item__bg" src="images/gallery-cottage-vigan.jpg" alt="Roof Deck / Vigan House">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Roof Deck / Vigan House</h2>
+ <p class="gallery-item__copy">Premium venue for up to 25 guests with panoramic views. ₱3,500.</p>
+ <span class="gallery-item__tag">Cottages</span>
+ </div>
+ </div>
+
+ <!-- FACILITIES -->
+ <div class="gallery-section-title"> Facilities</div>
+
+ <div class="gallery-item" data-category="facilities" data-emoji="" data-caption="Duckpin bowling lanes indoor fun for the whole family">
+ <img class="gallery-item__bg" src="images/gallery-facility-bowling.jpg" alt="Duckpin Bowling">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">Duckpin Bowling</h2>
+ <p class="gallery-item__copy">Indoor bowling fun for all ages a unique feature you won't find anywhere else.</p>
+ <span class="gallery-item__tag">Facilities</span>
+ </div>
+ </div>
+
+ <div class="gallery-item" data-category="facilities" data-emoji="" data-caption="In-house restaurant serving Filipino and international cuisine">
+ <img class="gallery-item__bg" src="images/gallery-facility-restaurant.jpg" alt="In-House Restaurant">
+ <div class="gallery-item__content">
+ <h2 class="gallery-item__title">In-House Restaurant</h2>
+ <p class="gallery-item__copy">Filipino and international dishes served fresh perfect for group meals.</p>
+ <span class="gallery-item__tag">Facilities</span>
+ </div>
+ </div>
+
+
+
+ </div><!-- end gallery-grid -->
+
+ </div>
+ </div>
+ </section>
+
+ <!-- CTA -->
+ <section style="background: var(--color-gray-2); padding: var(--vspace-3) 0;">
+ <div class="row" style="justify-content:center; text-align:center;">
+ <div class="column lg-8 tab-12 reveal">
+ <h2 style="margin-bottom:.8rem;">Like What You See?</h2>
+ <p style="font-size:var(--text-md); color:var(--color-text-light); margin-bottom: var(--vspace-1_5);">Book your visit today and create your own unforgettable memories at Grotto Vista Resort.</p>
+ <div style="display:flex; gap:1.6rem; justify-content:center; flex-wrap:wrap;">
+ <a href="reservations.html" class="btn btn--primary">Book Now</a>
+ <a href="contact.html" class="btn btn--stroke">Contact Us</a>
+ </div>
+ </div>
+ </div>
+ </section>
+ </main>
+
+ <!-- FOOTER -->
+ <footer class="s-footer">
+ <div class="row" style="padding-bottom: var(--vspace-2); border-bottom: 1px solid rgba(255,255,255,.08);">
+ <div class="column lg-4 tab-12" style="margin-bottom: var(--vspace-1);">
+ <a href="index.html" style="font-family:var(--font-2); font-size:2rem; font-weight:700; color:white; display:block; margin-bottom:.8rem;">Grotto <span style="color:var(--color-1);">Vista</span></a>
+ <p style="font-size:var(--text-sm); color:rgba(255,255,255,.5); line-height:1.8; margin:0;">San Jose del Monte City, Bulacan · Est. 1995</p>
+ </div>
+ <div class="column lg-8 tab-12" style="display:flex; gap: var(--vspace-2); flex-wrap:wrap; justify-content:flex-end; align-items:flex-start;">
+ <div>
+ <h6 style="font-family:var(--font-2); font-size:var(--text-xs); letter-spacing:.12em; text-transform:uppercase; color:white; margin-bottom:.8rem;">Navigation</h6>
+ <ul style="list-style:none; padding:0; margin:0; display:flex; gap:1.6rem; flex-wrap:wrap;">
+ <li><a href="index.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Home</a></li>
+ <li><a href="rates.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Rates</a></li>
+ <li><a href="reservations.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Reservations</a></li>
+ <li><a href="facilities.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Facilities</a></li>
+ <li><a href="gallery.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Gallery</a></li>
+ <li><a href="contact.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Contact</a></li>
+ <li><a href="directions.html" style="font-size:var(--text-sm); color:rgba(255,255,255,.5);">Directions</a></li>
+ </ul>
+ </div>
+ </div>
+ </div>
+ <div class="row">
+ <div style="display:flex; justify-content:space-between; align-items:center; width:100%; flex-wrap:wrap; gap:1rem; padding: var(--vspace-1) 0;">
+ <p style="font-size:var(--text-xs); color:rgba(255,255,255,.3); margin:0;">© 2025 Grotto Vista Resort. All Rights Reserved.</p>
+ </div>
+ </div>
+ </footer>
+
+ </div>
+
+ <!-- LIGHTBOX -->
+ <div id="lightbox" class="lightbox" role="dialog" aria-modal="true" aria-label="Image lightbox">
+ <div class="lightbox__content">
+ <button class="lightbox__close" aria-label="Close lightbox"></button>
+ <div class="lightbox__body"></div>
+ <p class="lightbox__caption"></p>
+ </div>
+ </div>
+
+ <div class="ss-go-top">
+ <a href="#top" title="Back to Top">
+ <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M6 4h12v2H6zm5 10v6h2v-6h5l-6-6-6 6z"/></svg>
+ </a>
+ </div>
+
+ <script src="js/script.js"></script>
+</body>
+</html>
