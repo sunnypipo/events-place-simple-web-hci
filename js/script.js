@@ -118,10 +118,17 @@
         // Open lightbox on gallery item click
         galleryItems.forEach(function(item) {
             item.addEventListener('click', function() {
-                const emoji = item.getAttribute('data-emoji') || '🏖️';
+                const img = item.querySelector('img').src;
                 const caption = item.getAttribute('data-caption') || '';
 
-                if (lightboxBody) lightboxBody.innerHTML = '<div style="font-size:6rem">' + emoji + '</div>';
+                if (lightboxBody) {
+                    lightboxBody.innerHTML = `
+                    <div class="lightbox-img-wrapper">
+                        <img src="${img}" class="lightbox-img">
+                    </div>
+                    `;
+                }
+
                 if (lightboxCaption) lightboxCaption.textContent = caption;
 
                 lightbox.classList.add('is-open');
